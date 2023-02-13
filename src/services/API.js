@@ -6,7 +6,10 @@ class API {
         .then((res) => res.json())
     }
 
-    
+    static getAllPosts = () => { 
+        return fetch('https://raw.githubusercontent.com/zile028/fake-db/main/posts')
+        .then((res) =>  res.json())
+     }
 
 }
 
