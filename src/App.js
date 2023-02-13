@@ -24,16 +24,22 @@ function App() {
 			// console.log('Selected Tag ....', selectedTag);
 			// console.log(data);
 			setAllPosts(data);
+			// setFilteredPost(data)
 		});
 	}, []);
 
 	useEffect(() => {
-		let filtered = allPosts.filter((post) => {
-			return post.tags.includes(selectedTag);
-		});
-		console.log(filtered);
-		setFilteredPost(filtered);
-	}, [selectedTag]);
+		if (selectedTag) {
+			let filtered = allPosts.filter((post) => {
+				return post.tags.includes(selectedTag);
+			});
+			setFilteredPost(filtered);
+		} else {
+			setFilteredPost(allPosts);
+		}
+
+		// console.log(filtered);
+	}, [selectedTag, allPosts]);
 
 	return (
 		<>
@@ -45,15 +51,23 @@ function App() {
 				<div className="row">
 					<div className="col-2">
 						{allTags.length > 0 && (
-							<Sidebar tags={allTags} selectedTag={setSelectedTag} currentTag={selectedTag} />
+							<Sidebar
+								tags={allTags}
+								selectedTag={setSelectedTag}
+								currentTag={selectedTag}
+							/>
 						)}
 					</div>
 					<div className="col-10">
 						{filteredPost.length === 0 ? (
 							<p className="my-5 text-center">Choose category from sidebar:</p>
 						) : (
-							// <PostLayout posts={filteredPost} selectedTag={setSelectedTag} />
-							<PostLayout tag={selectedTag} allPosts={allPosts} selectedTag={setSelectedTag} />
+							<PostLayout posts={filteredPost} selectedTag={setSelectedTag} />
+							// <PostLayout
+							// 	tag={selectedTag}
+							// 	allPosts={allPosts}
+							// 	selectedTag={setSelectedTag}
+							// />
 						)}
 					</div>
 				</div>
