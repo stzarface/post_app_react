@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
+import Sidebar from "./components/Sidebar";
+import API from "./services/API";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	// Cim se ucita aplikacija - komponenta App.js (kaze se i mauntuje) trevbaju nam podaci
+	// Prvi put se pokrece svakako, a ako imamo nesto na mestu uglastih zagrada ucitava se kad god se to promeni
+
+	const [allTags, setAllTags] = useState([]);
+
+  
+
+	useEffect(() => {
+		API.getAllTags().then((data) => {
+			// console.log(data);
+
+			setAllTags(data);
+		});
+	}, []);
+
+	return (
+		<>
+			<header className="container-fluid py-5 bg-dark bg-opacity-10 text-center">
+				<h1>Blog Post App</h1>
+			</header>
+
+			<div className="container">
+				<div className="row">
+					<div className="col-2">{allTags.length > 0 && <Sidebar tags={allTags} />}</div>
+					<div className="col-10"></div>
+				</div>
+			</div>
+		</>
+	);
 }
 
 export default App;
+
+
