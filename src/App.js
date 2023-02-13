@@ -9,10 +9,9 @@ function App() {
 	// Prvi put se pokrece svakako, a ako imamo nesto na mestu uglastih zagrada ucitava se kad god se to promeni
 
 	const [allTags, setAllTags] = useState([]);
-  const [allPosts, setAllPosts] = useState([]);
-  const [selectedTag, setSelectedTag] = useState('')
-  const [filteredPost, setFilteredPost] = useState([]);
-  
+	const [allPosts, setAllPosts] = useState([]);
+	const [selectedTag, setSelectedTag] = useState("");
+	const [filteredPost, setFilteredPost] = useState([]);
 
 	useEffect(() => {
 		API.getAllTags().then((data) => {
@@ -21,21 +20,20 @@ function App() {
 			setAllTags(data);
 		});
 
-    API.getAllPosts().then((data) => {
-      // console.log('Selected Tag ....', selectedTag);
-      // console.log(data);
-      setAllPosts(data)
-      
-    })
+		API.getAllPosts().then((data) => {
+			// console.log('Selected Tag ....', selectedTag);
+			// console.log(data);
+			setAllPosts(data);
+		});
 	}, []);
 
-  useEffect(() => {
-    let filtered = allPosts.filter((post) => {
-      return post.tags.includes(selectedTag)
-    })
-    console.log(filtered);
-    
-  }, [selectedTag])
+	useEffect(() => {
+		let filtered = allPosts.filter((post) => {
+			return post.tags.includes(selectedTag);
+		});
+		console.log(filtered);
+		setFilteredPost(filtered);
+	}, [selectedTag]);
 
 	return (
 		<>
@@ -43,13 +41,21 @@ function App() {
 				<h1>Blog Post App</h1>
 			</header>
 
-			<div className="container">
+			<div className="container mt-5">
 				<div className="row">
-					<div className="col-2">{allTags.length > 0 && <Sidebar tags={allTags} selectedTag={setSelectedTag} />}</div>
+					<div className="col-2">
+						{allTags.length > 0 && (
+							<Sidebar tags={allTags} selectedTag={setSelectedTag} currentTag={selectedTag} />
+						)}
+					</div>
 					<div className="col-10">
-            <p className="my-5 text-center">Choose category from sidebar:</p>
-            <PostLayout posts={filteredPost}/>
-          </div>
+						{filteredPost.length === 0 ? (
+							<p className="my-5 text-center">Choose category from sidebar:</p>
+						) : (
+							// <PostLayout posts={filteredPost} selectedTag={setSelectedTag} />
+							<PostLayout tag={selectedTag} allPosts={allPosts} selectedTag={setSelectedTag} />
+						)}
+					</div>
 				</div>
 			</div>
 		</>
@@ -57,5 +63,3 @@ function App() {
 }
 
 export default App;
-
-

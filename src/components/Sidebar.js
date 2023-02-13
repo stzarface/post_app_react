@@ -1,11 +1,15 @@
 import React from "react";
 
-function Sidebar({ tags, selectedTag }) {
+const active = {
+	backgroundColor: "red"
+}
+
+function Sidebar({ tags, selectedTag, currentTag }) {
 	const renderTags = () =>
 		tags.map((tag, index) => {
 			return (
 				<li key={index} className="list-group-item">
-					<button className="btn btn-info w-100" onClick={() => selectedTag(tag)}>{tag}</button>
+					<button className="btn btn-info w-100" style={currentTag === tag ? active : null} onClick={() => selectedTag(tag)}>{tag}</button>
 				</li>
 			);
 		});
